@@ -1,0 +1,14 @@
+{
+  "name": "practice_ejs",
+  "version": "1.0.0",
+  "description": "Just practising myself palying around CRUD, express , session and cookie ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Niraj Chemjong",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
