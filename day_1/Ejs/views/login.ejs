@@ -1,0 +1,32 @@
+<%- include('header.ejs', {title:"Login"}) %>
+
+    <body>
+        <h1 class="mt-5 mb-2 w-50 mx-auto text-bg-info text-center"> Login Page</h1>
+        <form method="post" class="w-50 mx-auto">
+            <div class="mb-3 ">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input name="email" type="email" class="form-control" id="exampleInputEmail1"
+                    aria-describedby="emailHelp">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input name="password" type="password" class="form-control" id="exampleInputPassword1">
+            </div>
+            <!-- <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div> -->
+            <button type="submit" class="btn btn-primary  w-75 ">Submit</button>
+            <div class="text-dark-emphasis"> Wanna sign Up? <a href="/register"> Register</a></div>
+            <% if(locals.message) { %>
+                <div class="alert <%=locals.class %>">
+                    <%=locals.message%>
+                </div>
+                <% } %>
+        </form>
+
+
+    </body>
+
+    </html>
