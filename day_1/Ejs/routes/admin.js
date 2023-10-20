@@ -4,9 +4,20 @@ const router = express.Router();
 
 // router.use(checkAuth);
 
-router.get("/dashboard", checkSessionAuth, (req, res) => {
+router.use((req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  } else {
+    res.redirect("/login");
+  }
+});
+router.get("/dashboard", (req, res) => {
   //   console.log("I am dashoar");
-  res.render("dashboard");
+  //if you are calling directly calling from api then only use req.body.
+  const { user } = req;
+  res.render("dashboard", {
+    name: `New Dashboard - Welcome ${user.name}`,
+  });
 });
 
 module.exports = router;
