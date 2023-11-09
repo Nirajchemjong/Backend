@@ -1,33 +1,17 @@
 const { Router } = require("express");
+const {
+  getAllTrans,
+  createTrans,
+  deleteTrans,
+} = require("../controller/transController");
 
 const trans = Router();
 
-trans.get("/", (req, res) => {
-  res.json({
-    status: "success",
-    message: "hello world",
-  });
-});
+trans.get("/", getAllTrans);
 
-trans.post("/", (req, res) => {
-  const { body } = req;
+trans.post("/", createTrans);
 
-  const data = { ...body };
-
-  res.json({
-    status: "success",
-    data: data,
-  });
-});
-
-trans.delete("/:id", (req, res) => {
-  const { id } = req.body;
-
-  res.json({
-    status: "successfully deleted",
-    id: id,
-  });
-});
+trans.delete("/:id", deleteTrans);
 
 trans.patch("/:id", (req, res) => {
   const { id } = req.body;

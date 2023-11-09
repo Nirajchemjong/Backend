@@ -1,5 +1,7 @@
 const express = require("express");
 require("dotenv").config();
+const dbConnect = require("./src/config/mongoDB");
+
 const userRouter = require("./src/routes/userRoute");
 const transRouter = require("./src/routes/transRoute");
 const app = express();
@@ -14,6 +16,13 @@ app.use("/api/v1/transaction", transRouter);
 
 const PORT = process.env.PORT || 2000;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on ${PORT}`);
-});
+dbConnect()
+  .then(() => {
+    console.log("database connected successfuly");
+    app.listen(PORT, () => {
+      console.log(`Server is running on ${PORT}`);
+    });
+  })
+  .catch((e) => {
+    console.log("error" + e);
+  });
