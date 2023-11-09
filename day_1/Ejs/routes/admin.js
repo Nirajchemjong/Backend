@@ -13,7 +13,7 @@ router.use((req, res, next) => {
 });
 router.get("/dashboard", (req, res) => {
   //   console.log("I am dashoar");
-  //if you are calling directly calling from api then only use req.body.
+  //if you are  directly calling from api then only use req.body.
   const { user } = req;
   res.render("dashboard", {
     name: `New Dashboard - Welcome ${user.name}`,

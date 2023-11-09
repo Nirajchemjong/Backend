@@ -14,7 +14,10 @@ app.set("views", path.join(__dirname, "views"));
 
 ///++++++++++++++ --- Once the route is been imported then app must use it to work that URL thank++++
 
-app.use(authRouter);
+app.use(authRouter); //===== using authrouter to make sure auth route/auth is working properly 
+
+
+
 const PORT = process.env.PORT || 3004;
 
 // app.get("/", (req, res) => {
