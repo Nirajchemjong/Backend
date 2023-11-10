@@ -1,15 +1,7 @@
 const mongoose = require("mongoose");
 
-const transSchema = mongoose.Schema(
+const transSchema = new mongoose.Schema(
   {
-    // expense: {
-    //   type: String,
-    //   required: [true, "Enter your Expenses"],
-    // },
-    // income: {
-    //   type: String,
-    //   required: [true, "Enter your Income"],
-    // },
     type: {
       type: String,
       required: [true, "Select the type"],

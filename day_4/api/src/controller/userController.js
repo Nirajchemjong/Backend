@@ -1,12 +1,27 @@
 const User = require("../config/db/model/userModel");
 const { API_STATUS } = require("../utils/Constant");
 
-const getAllUsers = async (req, res) => {
+const loginUser = async (req, res) => {
   try {
+    const { email, password } = req.body;
+    const user = await User.findOne(
+      {
+        email,
+        password,
+      },
+      "-password"
+    );
+    if (!user) {
+      return res.json({
+        status: API_STATUS.FAILURE,
+        message: `Login Error`,
+      });
+    }
     const users = await User.find({}, "-password");
+    // const users = await User.find();
     res.json({
       status: API_STATUS.SUCCESS,
-      data: users,
+      data: user,
     });
   } catch (e) {
     res.json({
@@ -30,7 +45,7 @@ const createUser = async (req, res) => {
     }
 
     console.log({ email, ...rest });
-    const user = await users.create({ email, ...rest });
+    const user = await User.create({ email, ...rest });
     res.json({
       status: API_STATUS.SUCCESS,
       data: user,
@@ -40,4 +55,4 @@ const createUser = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, createUser };
+module.exports = { loginUser, createUser };

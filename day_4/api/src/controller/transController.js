@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const Transaction = require("../config/db/model/transModel");
 // const transaction = require("../config/db/model/transModel");
 const User = require("../config/db/model/userModel");
@@ -5,7 +7,25 @@ const { API_STATUS } = require("../utils/Constant");
 
 const getAllTrans = async (req, res) => {
   try {
-    const trans = await Transaction.find({});
+    const { authorization } = req.headers;
+    // // console.log("AUth", authorization); userid
+    // // Format check
+    // if (!mongoose.Types.ObjectId.isValid(authorization)) {
+    //   return res.json({
+    //     status: API_STATUS.FAILURE,
+    //     message: `Authentication failed`,
+    //   });
+    // }
+    // const user = await User.findById(authorization);
+    // if (!user) {
+    //   return res.json({
+    //     status: API_STATUS.FAILURE,
+    //     message: `Auth Error`,
+    //   });
+    // }
+    const filter = { userId: authorization };
+    //  const user = await User.findById();
+    const trans = await Transaction.find(filter);
     res.json({
       status: API_STATUS.SUCCESS,
       data: trans,
@@ -16,12 +36,13 @@ const getAllTrans = async (req, res) => {
 };
 
 const createTrans = async (req, res) => {
-  // const userID = User.findOne()
+  const { authorization } = req.headers;
 
   try {
     const { body } = req;
-
-    const trans = await Transaction.create(body);
+    // "type": "expense",
+    // "amount": 23
+    const trans = await Transaction.create({ ...body, userId: authorization });
     res.json({
       status: API_STATUS.SUCCESS,
       data: trans,
@@ -33,9 +54,18 @@ const createTrans = async (req, res) => {
 
 const deleteTrans = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { authorization } = req.headers;
 
-    const trans = await Transaction.findByIdAndDelete(id);
+    const { id } = req.params;
+    const trans = await Transaction.findOne({ _id: id, userId: authorization });
+    if (!trans) {
+      return res.json({
+        status: API_STATUS.FAILURE,
+        message: `You dont have access to delete this transaction `,
+      });
+    }
+
+    await Transaction.findByIdAndDelete(id);
 
     res.json({
       status: API_STATUS.SUCCESS,
