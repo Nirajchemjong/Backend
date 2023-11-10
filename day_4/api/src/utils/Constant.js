@@ -1,6 +1,6 @@
 const API_STATUS = {
   SUCCESS: "Success",
-  FAILURE: "Eroor",
+  FAILURE: "Error",
 };
 
 module.exports = { API_STATUS };
