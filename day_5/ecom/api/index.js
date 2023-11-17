@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const morgan = require('morgan');
 const auth = require('./router/authRouter');
 const { message: { ERROR } } = require('./utils/constant');
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 // auth router
 app.use('/api/v1/auth', auth);
 
+// eslint-disable-next-line no-unused-vars
 app.use((e, req, res, next) => {
   res.status(500).json({
     status: ERROR,
