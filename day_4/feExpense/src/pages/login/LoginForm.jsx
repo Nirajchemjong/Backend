@@ -1,5 +1,7 @@
-import { useState } from "react";
+import {  useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import NavBar from "../../component/nav/NavBar";
+
 
 const LoginForm = () => {
   const formFields = [
@@ -37,23 +39,27 @@ const LoginForm = () => {
     console.log("Form Submitted with:", { ...formValues });
   };
 
-  return (
+  return (<>
+    <NavBar/>
     <div
       style={{
-        height: "100vh",
+        height: "80dvh",
         width: "100vw",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        alignContent:"center"
       }}
     >
+   
       <Form
         className='login_form'
         style={{
           height: "40vh",
           width: "40rem",
-          margin: "0 auto",
-          padding: "1rem",
+          margin: "2rem auto",
+          
+          // padding: "1rem",
         }}
         onSubmit={handleSubmit}
       >
@@ -85,7 +91,8 @@ const LoginForm = () => {
           Submit
         </Button>
       </Form>
-    </div>
+    </div></>
+  
   );
 };
 
