@@ -1,4 +1,4 @@
-const User = require("../config/db/model/userModel");
+const User = require("../db/model/userModel");
 const { API_STATUS } = require("../utils/Constant");
 
 const loginUser = async (req, res) => {

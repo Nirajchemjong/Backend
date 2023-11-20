@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
-const Transaction = require("../config/db/model/transModel");
+const Transaction = require("../db/model/transModel");
 // const transaction = require("../config/db/model/transModel");
-const User = require("../config/db/model/userModel");
+const User = require("../db/model/userModel");
 const { API_STATUS } = require("../utils/Constant");
 
 const getAllTrans = async (req, res) => {

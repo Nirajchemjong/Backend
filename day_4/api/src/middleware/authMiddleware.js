@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { API_STATUS } = require("../utils/Constant");
-const User = require("../config/db/model/userModel");
+const User = require("../db/model/userModel");
 
 const authMiddleware = async (req, res, next) => {
   const { authorization } = req.headers;

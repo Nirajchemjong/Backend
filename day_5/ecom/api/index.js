@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const morgan = require('morgan');
-const auth = require('./router/authRouter');
+const dbConnect = require('./config/mangoConfig');
+const authRouter = require('./router/authRouter');
 const { message: { ERROR } } = require('./utils/constant');
 require('dotenv').config();
 
@@ -14,17 +15,19 @@ app.use(express.json());
 app.use(morgan('dev'));
 // route
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.json({
     status: 'success',
     message: 'App is live',
   });
 });
 // auth router
-app.use('/api/v1/auth', auth);
+app.use('/api/v1/auth', authRouter);
+
+// this middleware handle all the error using next
 
 // eslint-disable-next-line no-unused-vars
-app.use((e, req, res, next) => {
+app.use((e, _req, res, _next) => {
   res.status(500).json({
     status: ERROR,
     message: e.message,
@@ -33,6 +36,11 @@ app.use((e, req, res, next) => {
 
 const PORT = process.env.PORT || 3002;
 
-app.listen(PORT, (error) => (error
-  ? console.log('error: ', error)
-  : console.log(`app running at http://localhost:${PORT}`)));
+dbConnect.then(() => {
+  console.log('Db connect successfully');
+  app.listen(PORT, (error) => (error
+    ? console.log('error: ', error)
+    : console.log(`app running at http://localhost:${PORT}`)));
+}).catch((e) => {
+  console.log('Error', e);
+});
