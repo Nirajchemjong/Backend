@@ -12,7 +12,7 @@ const loginUser = async (req, res) => {
       "-password"
     );
     if (!user) {
-      return res.json({
+      return res.status(500).json({
         status: API_STATUS.FAILURE,
         message: `Login Error`,
       });
@@ -24,7 +24,7 @@ const loginUser = async (req, res) => {
       data: user,
     });
   } catch (e) {
-    res.json({
+    res.status(403).json({
       status: API_STATUS.FAILURE,
       message: `something worng ${e.message}`,
     });
@@ -38,7 +38,7 @@ const createUser = async (req, res) => {
     const existingUser = await User.findOne({ email: email });
 
     if (existingUser) {
-      res.json({
+     return res.status(403).json({
         status: API_STATUS.FAILURE,
         message: " email has been register already ",
       });
@@ -52,6 +52,10 @@ const createUser = async (req, res) => {
     });
   } catch (e) {
     console.log(`Something went worng - ${e.message}`);
+    res.status(500).json({
+      status: API_STATUS.FAILURE, 
+      message: e.message,
+    })
   }
 };
 

@@ -4,7 +4,7 @@ const { message: { ERROR } } = require('../utils/constant');
 
 const adminRegistrationValidation = (req, res, next) => {
   try {
-    console.log('Test it');
+    // console.log('Test it');
     // If req.body is valid then next if not throw error
     // JOI Schema difinition
 
@@ -14,11 +14,11 @@ const adminRegistrationValidation = (req, res, next) => {
       phone: joi.number().required(),
       email: joi.string().email().required(),
       address: joi.string().min(3).max(100),
-      password: joi.string()
+      password: joi.string().required()
         .regex(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/)
         .message('Password must be at least 6 characters long and contain at least one uppercase letter, one digit, and one special character.'),
     });
-    const { error } = schema.validate(req.body);
+    const { error } = schema.validate(req.body, { abortEarly: false });
     if (error) {
       res.json({
         status: ERROR,

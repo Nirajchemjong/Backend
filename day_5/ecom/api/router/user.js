@@ -1,12 +1,12 @@
 const { Router } = require('express');
 const { message: { SUCCESS } } = require('../utils/constant');
-const { registerUser } = require('../controller/authController');
+const { registerUser } = require('../controller/userController');
 const { adminRegistrationValidation } = require('../middleWare/joiValidation');
 
-const authRouter = Router();
+const userRouter = Router();
 
 // login
-authRouter.post('/login', (req, res, next) => {
+userRouter.post('/login', (req, res, next) => {
   try {
     res.json({
       status: SUCCESS,
@@ -18,7 +18,7 @@ authRouter.post('/login', (req, res, next) => {
 });
 
 // logout
-authRouter.get('/logout', (req, res, next) => {
+userRouter.get('/logout', (req, res, next) => {
   try {
     res.json({
       status: SUCCESS,
@@ -31,11 +31,11 @@ authRouter.get('/logout', (req, res, next) => {
 
 // admin Registration
 
-authRouter.post('/admin-registration', adminRegistrationValidation, registerUser);
+userRouter.post('/admin-registration', adminRegistrationValidation, registerUser);
 
 // Reset Password
 
-authRouter.post('/reset-password', (req, res, next) => {
+userRouter.post('/reset-password', (req, res, next) => {
   try {
     res.json({
       status: SUCCESS,
@@ -45,4 +45,4 @@ authRouter.post('/reset-password', (req, res, next) => {
     next(e);
   }
 });
-module.exports = authRouter;
+module.exports = userRouter;

@@ -3,7 +3,7 @@ const cors = require('cors');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const morgan = require('morgan');
 const dbConnect = require('./config/mangoConfig');
-const authRouter = require('./router/authRouter');
+const userRouter = require('./router/user');
 const { message: { ERROR } } = require('./utils/constant');
 require('dotenv').config();
 
@@ -22,7 +22,7 @@ app.get('/', (_req, res) => {
   });
 });
 // auth router
-app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/admin', userRouter);
 
 // this middleware handle all the error using next
 

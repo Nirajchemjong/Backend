@@ -26,12 +26,16 @@ const getAllTrans = async (req, res) => {
     const filter = { userId: authorization };
     //  const user = await User.findById();
     const trans = await Transaction.find(filter);
-    res.json({
+    res.status(200).json({
       status: API_STATUS.SUCCESS,
       data: trans,
     });
   } catch (e) {
     console.log(`something is wrong - ${e.message}`);
+    res.status(500).json({
+      status: API_STATUS.FAILURE, 
+      message: e.message
+    })
   }
 };
 
@@ -49,6 +53,10 @@ const createTrans = async (req, res) => {
     });
   } catch (e) {
     console.log(`something went wrong ${e.message}`);
+    res.status(500).json({
+      status: API_STATUS.FAILURE,
+     message: e.message
+    });
   }
 };
 
@@ -59,7 +67,7 @@ const deleteTrans = async (req, res) => {
     const { id } = req.params;
     const trans = await Transaction.findOne({ _id: id, userId: authorization });
     if (!trans) {
-      return res.json({
+      return res.status(500).json({
         status: API_STATUS.FAILURE,
         message: `You dont have access to delete this transaction `,
       });
@@ -67,11 +75,16 @@ const deleteTrans = async (req, res) => {
 
     await Transaction.findByIdAndDelete(id);
 
-    res.json({
+    res.status(200).json({
       status: API_STATUS.SUCCESS,
     });
   } catch (e) {
     console.log(`error is ${e.message}`);
+
+    res.status(500).json({
+      status: API_STATUS.FAILURE,
+      message: e.message
+    });
   }
 };
 
