@@ -20,7 +20,29 @@ const adminRegistrationValidation = (req, res, next) => {
     });
     const { error } = schema.validate(req.body, { abortEarly: false });
     if (error) {
-      res.json({
+      res.status(400).json({
+        status: ERROR,
+        message: error.message,
+      });
+    } else {
+      next();
+    }
+  } catch (error) {
+    next(error);
+    // console.log('error', error);
+  }
+};
+
+const adminVerificationValidation = (req, res, next) => {
+  try {
+    const schema = joi.object({
+
+      e: joi.string().required(),
+      c: joi.string().required(),
+    });
+    const { error } = schema.validate(req.body, { abortEarly: false });
+    if (error) {
+      res.status(402).json({
         status: ERROR,
         message: error.message,
       });
@@ -35,4 +57,5 @@ const adminRegistrationValidation = (req, res, next) => {
 
 module.exports = {
   adminRegistrationValidation,
+  adminVerificationValidation,
 };

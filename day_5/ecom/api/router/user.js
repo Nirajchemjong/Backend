@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { message: { SUCCESS } } = require('../utils/constant');
-const { registerUser } = require('../controller/userController');
-const { adminRegistrationValidation } = require('../middleWare/joiValidation');
+const { registerUser, verigyUser } = require('../controller/userController');
+const { adminRegistrationValidation, adminVerificationValidation } = require('../middleWare/joiValidation');
 
 const userRouter = Router();
 
@@ -45,4 +45,6 @@ userRouter.post('/reset-password', (req, res, next) => {
     next(e);
   }
 });
+
+userRouter.post('/admin-verification', adminVerificationValidation, verigyUser);
 module.exports = userRouter;

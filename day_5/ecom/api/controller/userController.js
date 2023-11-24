@@ -1,51 +1,33 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable import/order */
 /* eslint-disable import/no-extraneous-dependencies */
 const { v4: uuidv4 } = require('uuid');
-const { message: { SUCCESS } } = require('../utils/constant');
+const { message: { SUCCESS }, message } = require('../utils/constant');
 const { encryptPassword } = require('../helper/bcrypt');
-const { createAdmin } = require('../model/user/userModel');
+const { createAdmin, updateAdmin, getAdmin } = require('../model/user/userModel');
+const { sendAccountActivationEmail, sendVerificationConfirmation } = require('../helper/nodemailer');
 
-// eslint-disable-next-line no-unused-expressions
-'use strict';
-const nodemailer = require('nodemailer');
+const FR_URL = process.env.FE_URL || 'http://localhost:3002';
 
 async function registerUser(req, res, next) {
   try {
     // Check for Schema validation of req.body before saving to DB
     // JOI Schema Validation
     const { email, password, fName } = req.body;
-    console.log(uuidv4);
+    // console.log(uuidv4);
 
     req.body.password = encryptPassword(password);
     // 1. Add verification code to user and then save
-    req.body.verificationCode = uuidv4(); // we got the verificationCode.
+    const verificationCode = uuidv4();
+    req.body.verificationCode = verificationCode; // we got the verificationCode.
 
     //  --> isVerified = false
     //  -->verifactionCode = ""
     // -->
     // 2. Send an email so they can verify their email
-    const link = '';
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      auth: {
-        user: 'peter.batz@ethereal.email',
-        pass: 'c5qqnXq84E4xQcFdWa',
-      },
-    });
-
-    await transporter.sendMail({
-      from: '"Coderniraj" <info@nirajchemjong.com>',
-      to: email,
-      subject: 'Account Activation Required',
-      text: `Hello ${fName}, please clink on this link ${link} to activate your Account`,
-      html: ` <p> 
-      Hello ${fName}, 
-      Please clink on this link to active your Account, 
-      ${link},
-      </p>`, // html body
-    });
-
+    const link = `${FR_URL}/admin-verification?c=${verificationCode}&e=${email}`;
+    // const obj = { link, fName, email };
+    await sendAccountActivationEmail({ link, fName, email });
     // console.log(req.body);
     // await userModel.create(req.body);
     await createAdmin(req.body);
@@ -58,6 +40,40 @@ async function registerUser(req, res, next) {
   }
 }
 
+// verfing users once they got email
+const verigyUser = async (req, res, next) => {
+  try {
+    const { e, c } = req.body;
+    const filter = {
+      email: e,
+      verificationCode: c,
+    };
+    const updateObj = {
+      inVerified: true,
+      verificationCode: '',
+    };
+    const response = await updateAdmin(filter, updateObj);
+
+    if (response?._id) {
+      const { fName } = await getAdmin({ email: e }); // destructing to fName
+      await sendVerificationConfirmation({ link: FR_URL, email: e, fName });
+      res.json({
+        status: SUCCESS,
+        message: 'your account is verified successfully, you can login now',
+      });
+    } else {
+      res.status(403).json({
+        status: message.ERROR,
+        message: 'your link is expired or invalid',
+      });
+    }
+    console.log(response);
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
   registerUser,
+  verigyUser,
 };

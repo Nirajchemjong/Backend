@@ -28,6 +28,7 @@ app.use('/api/v1/admin', userRouter);
 
 // eslint-disable-next-line no-unused-vars
 app.use((e, _req, res, _next) => {
+  console.log(e);
   res.status(500).json({
     status: ERROR,
     message: e.message,
