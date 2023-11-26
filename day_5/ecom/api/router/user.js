@@ -1,23 +1,25 @@
 const { Router } = require('express');
 const { message: { SUCCESS } } = require('../utils/constant');
-const { registerUser, verigyUser } = require('../controller/userController');
-const { adminRegistrationValidation, adminVerificationValidation } = require('../middleWare/joiValidation');
+const { registerUser, verigyUser, loginUserController } = require('../controller/userController');
+const { adminRegistrationValidation, adminVerificationValidation, loginUserValidation } = require('../middleWare/joiValidation');
 
 const userRouter = Router();
 
 // login
-userRouter.post('/login', (req, res, next) => {
-  try {
-    res.json({
-      status: SUCCESS,
-      message: 'This is login',
-    });
-  } catch (e) {
-    next(e);
-  }
-});
+// userRouter.post('/login', (req, res, next) => {
+//   try {
+//     res.json({
+//       status: SUCCESS,
+//       message: 'This is login',
+//     });
+//   } catch (e) {
+//     next(e);
+//   }
+// });
 
 // logout
+userRouter.post('/login', loginUserValidation, loginUserController);
+
 userRouter.get('/logout', (req, res, next) => {
   try {
     res.json({

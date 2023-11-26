@@ -1,11 +1,13 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable import/order */
 /* eslint-disable import/no-extraneous-dependencies */
 const { v4: uuidv4 } = require('uuid');
 const { message: { SUCCESS }, message } = require('../utils/constant');
-const { encryptPassword } = require('../helper/bcrypt');
+const { encryptPassword, comparePassword } = require('../helper/bcrypt');
 const { createAdmin, updateAdmin, getAdmin } = require('../model/user/userModel');
 const { sendAccountActivationEmail, sendVerificationConfirmation } = require('../helper/nodemailer');
+const { createAccessJWT, createRefreshJWT } = require('../helper/jwt');
 
 const FR_URL = process.env.FE_URL || 'http://localhost:3002';
 
@@ -73,7 +75,49 @@ const verigyUser = async (req, res, next) => {
   }
 };
 
+/*
+
+loign user
+*/
+
+const loginUserController = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    console.log(email, password);
+    // make user password is valid
+
+    const user = await getAdmin({ email });
+
+    if (user?._id) {
+      const isPassValid = comparePassword(password, user?.password);
+      if (isPassValid) {
+        // const { _id } = user;
+        // if pass valid
+        // now generate JWT Tokens and send it back
+        const accessJWT = await createAccessJWT({ email });
+        const refreshJWT = await createRefreshJWT({ email });
+
+        return res.status(200).json({
+          status: SUCCESS,
+          message: 'Logged in success',
+          token: {
+            accessJWT,
+            refreshJWT,
+          },
+        });
+      }
+    }
+    return res.status(403).json({
+      status: message.ERROR,
+      message: 'Invalid Login Detials',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   registerUser,
   verigyUser,
+  loginUserController,
 };

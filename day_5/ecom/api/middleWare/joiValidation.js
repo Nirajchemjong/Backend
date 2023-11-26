@@ -55,7 +55,32 @@ const adminVerificationValidation = (req, res, next) => {
   }
 };
 
+const loginUserValidation = (req, res, next) => {
+  try {
+    const schema = joi.object({
+
+      email: joi.string().email().required(),
+      password: joi.string().required()
+        .regex(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/)
+        .message('Password must be at least 6 characters long and contain at least one uppercase letter, one digit, and one special character.'),
+    });
+    const { error } = schema.validate(req.body, { abortEarly: false });
+    if (error) {
+      res.status(402).json({
+        status: ERROR,
+        message: error.message,
+      });
+    } else {
+      next();
+    }
+  } catch (error) {
+    next(error);
+    // console.log('error', error);
+  }
+};
+
 module.exports = {
   adminRegistrationValidation,
   adminVerificationValidation,
+  loginUserValidation,
 };
