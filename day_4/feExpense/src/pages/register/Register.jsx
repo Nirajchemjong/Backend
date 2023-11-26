@@ -1,8 +1,9 @@
-// import React from "react"
 import { Button, Form } from "react-bootstrap";
+// import React from "react"
 import NavBar from "../../component/nav/NavBar";
 import { useState} from "react";
 import { createUser } from "./registeAction";
+import { useNavigate } from "react-router-dom";
 export const Register = () => {
 
   const inputFields= [{
@@ -19,6 +20,8 @@ export const Register = () => {
     label: "Password"
   }
 ]
+
+const navigate = useNavigate()
 const [input, setInput] = useState({});
 const handleOnchange =(e)=>{
   const {value, name} = e.target;
@@ -30,8 +33,9 @@ const handleOnchange =(e)=>{
 const handleOnSubmit = (e) => {
   
   e.preventDefault();
-console.table(input);
-  createUser(input)
+// console.table(input)
+
+  createUser(input, navigate)
 
 
 }

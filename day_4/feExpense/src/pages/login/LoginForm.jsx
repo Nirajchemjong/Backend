@@ -1,6 +1,7 @@
 import {  useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import NavBar from "../../component/nav/NavBar";
+import { loginUser } from "./loginAction";
 
 
 const LoginForm = () => {
@@ -36,7 +37,9 @@ const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log("Form Submitted with:", { ...formValues });
+
+  console.log("Form Submitted with:", { ...formValues });
+  loginUser({...formValues})
   };
 
   return (<>

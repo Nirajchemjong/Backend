@@ -1,13 +1,21 @@
 
 import axios from "axios";
-const URL = "http://localhost:3007/api/v1/user/";
+import { Constant } from "../../utils/Constant";
 
-export const createUser = async (formData) => {
-    console.log(formData)
-    const {data} = await axios.post(URL, formData)
-    console.table("from createSUer", data);
-
-        console.log(data.response?.data?.message)
+export const createUser = async (formData,navigate) => {
+    try {
+        
+    // console.log(formData)
+    const {data} = await axios.post(Constant.URL, formData)
+    // console.table("from createSUer", data);
+// console.log(data?.data?._id,"data id ")
+        console.log(data?.data?.message)
+        if(data?.data?._id){
+            navigate("/")
+        }
+    } catch (error) {
+        return console.error("error", error)
+    }
 }
 
 
