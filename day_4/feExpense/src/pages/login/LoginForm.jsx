@@ -2,9 +2,13 @@ import {  useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import NavBar from "../../component/nav/NavBar";
 import { loginUser } from "./loginAction";
+import { useNavigate } from "react-router-dom";
 
 
 const LoginForm = () => {
+
+  const navigate = useNavigate();
+
   const formFields = [
     {
       id: "email",
@@ -38,8 +42,8 @@ const LoginForm = () => {
     e.preventDefault();
     // Handle form submission logic here
 
-  console.log("Form Submitted with:", { ...formValues });
-  loginUser({...formValues})
+  // console.log("Form Submitted with:", { ...formValues });
+  loginUser({...formValues}, navigate)
   };
 
   return (<>

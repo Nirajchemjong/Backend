@@ -6,14 +6,14 @@ const authMiddleware = async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!mongoose.Types.ObjectId.isValid(authorization)) {
-    return res.json({
+    return res.status(403).json({
       status: API_STATUS.FAILURE,
       message: `Authentication failed`,
     });
   }
   const user = await User.findById(authorization);
   if (!user) {
-    return res.json({
+    return res.status(403).json({
       status: API_STATUS.FAILURE,
       message: `Auth Error`,
     });

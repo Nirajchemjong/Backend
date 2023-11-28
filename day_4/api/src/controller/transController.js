@@ -46,8 +46,9 @@ const createTrans = async (req, res) => {
     const { body } = req;
     // "type": "expense",
     // "amount": 23
+    console.log(body)
     const trans = await Transaction.create({ ...body, userId: authorization });
-    res.json({
+    res.status(200).json({
       status: API_STATUS.SUCCESS,
       data: trans,
     });

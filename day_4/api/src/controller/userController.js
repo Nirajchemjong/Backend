@@ -34,7 +34,6 @@ const loginUser = async (req, res) => {
 const createUser = async (req, res) => {
   try {
     const { email, ...rest } = req.body;
-
     const existingUser = await User.findOne({ email: email });
 
     if (existingUser) {
