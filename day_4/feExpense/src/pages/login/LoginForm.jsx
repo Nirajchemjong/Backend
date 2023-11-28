@@ -2,11 +2,11 @@ import {  useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import NavBar from "../../component/nav/NavBar";
 import { loginUser } from "./loginAction";
-import { useNavigate } from "react-router-dom";
+import {useDispatch, useNavigate } from "react-router-dom";
 
 
 const LoginForm = () => {
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const formFields = [
@@ -38,12 +38,15 @@ const LoginForm = () => {
     }));
   };
 
+
+  // Async 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here
-
-  // console.log("Form Submitted with:", { ...formValues });
-  loginUser({...formValues}, navigate)
+    
+    // console.log("Form Submitted with:", { ...formValues });
+dispatch(  loginUser({...formValues}, navigate))
+  // const {data, status} = await 
   };
 
   return (<>
@@ -104,3 +107,6 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
+
+//redux persist -- 

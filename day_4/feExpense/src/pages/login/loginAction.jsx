@@ -1,6 +1,6 @@
 import axios from "axios";
 import {Constant} from "../../utils/Constant"
-export const loginUser = async (formData, navigate  )=>{
+export const loginUser =  (formData, navigate  )=>async ()=>{
 try {
     
     const {userData} = await axios.post(Constant.LOGIN_URL, formData); 
@@ -29,3 +29,7 @@ try {
 }
 
 }
+
+/* NOTE */
+//redux-thunk
+//dispatch
